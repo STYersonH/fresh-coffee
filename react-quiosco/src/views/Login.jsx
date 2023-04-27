@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 const Login = () => {
   return (
     <>
@@ -39,6 +41,11 @@ const Login = () => {
           />
         </form>
       </div>
+      <nav className="mt-5">
+        {/* <a href="/auth/registro">No tienes cuenta? crea una</a> */}
+        {/* no se recargara la pagina al usar Link */}
+        <Link to="/auth/registro">No tienes cuenta? crea una</Link>
+      </nav>
     </>
   );
 };
