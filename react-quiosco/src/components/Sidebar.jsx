@@ -1,7 +1,10 @@
-import { categorias } from "../data/categorias";
 import Categoria from "./Categoria";
+import useQuiosco from "../hooks/useQuiosco";
 
 const Sidebar = () => {
+  // recuperar las categorias desde QuioscoProvider al usar useQuiosco
+  const { categorias } = useQuiosco();
+
   return (
     <aside className="md:w-72">
       <div className="p-4">

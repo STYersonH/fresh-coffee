@@ -1,18 +1,26 @@
-import { createContext } from "react";
+import { createContext, useState } from "react";
+import { categorias as categoriasDB } from "../data/categorias";
 
 const QuioscoContext = createContext();
 
 const QuisqoProvider = ({ children }) => {
-  //podemos pasar cualquier cosa al value
-  const hola = "hola mundo";
-  const funcion = (_) => console.log("a");
+  const [categorias, setCategorias] = useState(categoriasDB);
+  const [categoriaActual, setCategoriaActual] = useState(categorias[0]);
+
+  // handle : para eventos con clicks -> cambia la categoria actual
+  const handleClickCategoria = (id) => {
+    const categoria = categorias.filter((categoria) => categoria.id === id)[0];
+    setCategoriaActual(categoria);
+  };
 
   return (
     //{{}} significa que es un codigo de JS y que pasamos un objeto
     <QuioscoContext.Provider
       value={{
-        hola,
-        funcion,
+        //podemos pasar cualquier cosa al value
+        categorias, //estara disponible en toda la aplicacion gracias al context
+        categoriaActual,
+        handleClickCategoria,
       }}
     >
       {children}
