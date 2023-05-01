@@ -10,9 +10,13 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "framer-motion": "^10.12.4",
+    "motion-react": "^0.15.0-alpha.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-router-dom": "^6.10.0"
+    "react-modal": "^3.16.1",
+    "react-router-dom": "^6.10.0",
+    "styled-components": "^5.3.10"
   },
   "devDependencies": {
     "@types/react": "^18.0.28",

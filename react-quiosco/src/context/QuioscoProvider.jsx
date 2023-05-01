@@ -6,6 +6,8 @@ const QuioscoContext = createContext();
 const QuisqoProvider = ({ children }) => {
   const [categorias, setCategorias] = useState(categoriasDB);
   const [categoriaActual, setCategoriaActual] = useState(categorias[0]);
+  const [modal, setModal] = useState(false);
+  const [producto, setProducto] = useState({});
 
   // handle : para eventos con clicks -> cambia la categoria actual
   const handleClickCategoria = (id) => {
@@ -13,6 +15,13 @@ const QuisqoProvider = ({ children }) => {
     setCategoriaActual(categoria);
   };
 
+  const handleClickModal = () => {
+    setModal((modal) => !modal);
+  };
+
+  const handleSetProducto = (producto) => {
+    setProducto(producto);
+  };
   return (
     //{{}} significa que es un codigo de JS y que pasamos un objeto
     <QuioscoContext.Provider
@@ -21,6 +30,10 @@ const QuisqoProvider = ({ children }) => {
         categorias, //estara disponible en toda la aplicacion gracias al context
         categoriaActual,
         handleClickCategoria,
+        modal,
+        handleClickModal,
+        producto,
+        handleSetProducto,
       }}
     >
       {children}
