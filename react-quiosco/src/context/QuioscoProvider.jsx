@@ -8,6 +8,7 @@ const QuisqoProvider = ({ children }) => {
   const [categoriaActual, setCategoriaActual] = useState(categorias[0]);
   const [modal, setModal] = useState(false);
   const [producto, setProducto] = useState({});
+  const [pedido, setPedido] = useState([]);
 
   // handle : para eventos con clicks -> cambia la categoria actual
   const handleClickCategoria = (id) => {
@@ -22,6 +23,13 @@ const QuisqoProvider = ({ children }) => {
   const handleSetProducto = (producto) => {
     setProducto(producto);
   };
+
+  //desestructuracion de objetos
+  const handleAgregarPedido = ({ categoria_id, imagen, ...producto }) => {
+    // agregar en pedido, el producto nuevo
+    setPedido([...pedido, producto]);
+  };
+
   return (
     //{{}} significa que es un codigo de JS y que pasamos un objeto
     <QuioscoContext.Provider
@@ -34,6 +42,8 @@ const QuisqoProvider = ({ children }) => {
         handleClickModal,
         producto,
         handleSetProducto,
+        pedido,
+        handleAgregarPedido,
       }}
     >
       {children}

@@ -9,13 +9,13 @@
     left: 0;
     height: 100%;
     width: 100%;
-    background: #000000e1;
+    background: rgba(0, 0, 0, 0.4);
     display: flex;
     align-items: center;
     justify-content: center;
     overflow-y: hidden;
     /* el filtro se aplicara solo al blur */
-    backdrop-filter: blur(4px);
+    backdrop-filter: blur(20px);
   }
   
   

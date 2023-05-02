@@ -1,10 +1,21 @@
+import { useState } from "react";
 import useQuiosco from "../hooks/useQuiosco";
+import { formatearDinero } from "../helpers";
 
 const ModalProducto = () => {
-  const { producto, handleClickModal } = useQuiosco();
+  const { producto, handleClickModal, handleAgregarPedido } = useQuiosco();
+
+  const [cantidad, setCantidad] = useState(1);
+
+  //evitar que se reduzca a numeros negativos
+  const reducirPedido = () => {
+    if (cantidad > 1) {
+      setCantidad(cantidad - 1);
+    }
+  };
 
   return (
-    <div className=" w-full h-full md:flex gap-10 bg-red-500 p-3">
+    <div className=" w-full h-full md:flex gap-10 bg-white p-3">
       <div className="md:w-1/3">
         <img
           src={`../../public/img/${producto.imagen}.jpg`}
@@ -30,6 +41,63 @@ const ModalProducto = () => {
             </svg>
           </button>
         </div>
+
+        <h1 className="text-3xl font-bold mt-5">{producto.nombre}</h1>
+
+        <p className="mt-5 font-black text-5xl text-amber-500">
+          {formatearDinero(producto.precio)}
+        </p>
+
+        <div className="flex gap-4 mt-5 ">
+          <button onClick={() => reducirPedido()}>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={1.5}
+              stroke="currentColor"
+              className="w-6 h-6"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M19.5 12h-15"
+              />
+            </svg>
+          </button>
+          <p>{cantidad}</p>
+          <button onClick={() => setCantidad(cantidad + 1)}>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={1.5}
+              stroke="currentColor"
+              className="w-6 h-6"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M12 4.5v15m7.5-7.5h-15"
+              />
+            </svg>
+          </button>
+        </div>
+
+        <button
+          type="button"
+          className="bg-indigo-600 hover:bg-indigo-800 px-5 py-2 mt-[70px] text-white font-bold uppercase rounded-2xl "
+          //le pasamos un objeto que contiene producto y cantidad
+          // onClick={() => handleAgregarPedido({ producto, cantidad })}
+
+          //podemos hacer que cantidad sea parte del obj producto
+          onClick={() => {
+            handleAgregarPedido({ ...producto, cantidad });
+            handleClickModal();
+          }}
+        >
+          Agregar al pedido
+        </button>
       </div>
     </div>
   );
