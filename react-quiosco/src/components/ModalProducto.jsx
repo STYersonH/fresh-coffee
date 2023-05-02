@@ -1,11 +1,29 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import useQuiosco from "../hooks/useQuiosco";
 import { formatearDinero } from "../helpers";
 
 const ModalProducto = () => {
-  const { producto, handleClickModal, handleAgregarPedido } = useQuiosco();
+  const { producto, handleClickModal, handleAgregarPedido, pedido } =
+    useQuiosco();
 
   const [cantidad, setCantidad] = useState(1);
+  const [edicion, setEdicion] = useState(false);
+
+  //se ejecutara una vez que se renderize lo del arreglo de dependencias
+  useEffect(() => {
+    //detectar si hay un pedido del producto clickeado
+    if (pedido.some((pedidoState) => pedidoState.id === producto.id)) {
+      console.log("si esta el pedido");
+      const productoEdicion = pedido.filter(
+        (pedidoState) => pedidoState.id === producto.id
+      )[0];
+      //para que al volver a pulsar AGREGAR en un mismo producto este tenga la cantidad establecida antes
+      setCantidad(productoEdicion.cantidad);
+      setEdicion(true);
+    } else {
+      console.log("no esta el pedido");
+    }
+  }, [pedido]); //arreglo de dependencias [] -> se ejecuta una sola vez
 
   //evitar que se reduzca a numeros negativos
   const reducirPedido = () => {
@@ -96,7 +114,7 @@ const ModalProducto = () => {
             handleClickModal();
           }}
         >
-          Agregar al pedido
+          {edicion ? "Guardar cambios" : "agregar pedido"}
         </button>
       </div>
     </div>

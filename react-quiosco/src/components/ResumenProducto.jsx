@@ -3,8 +3,6 @@ import { formatearDinero } from "../helpers";
 const ResumenProducto = ({ producto }) => {
   const { id, nombre, precio, cantidad } = producto;
 
-  console.log(producto);
-
   return (
     <div className="shadow space-y-1 p-4 bg-white">
       <div className="space-y-2">

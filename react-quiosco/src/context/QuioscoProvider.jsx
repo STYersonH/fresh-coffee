@@ -26,8 +26,17 @@ const QuisqoProvider = ({ children }) => {
 
   //desestructuracion de objetos
   const handleAgregarPedido = ({ categoria_id, imagen, ...producto }) => {
-    // agregar en pedido, el producto nuevo
-    setPedido([...pedido, producto]);
+    //se actualizara la cantidad del pedido
+    if (pedido.some((pedidoState) => pedidoState.id === producto.id)) {
+      const pedidoActualizado = pedido.map((pedidoState) =>
+        pedidoState.id === producto.id ? producto : pedidoState
+      );
+
+      setPedido(pedidoActualizado);
+    } else {
+      // agregar en pedido, el producto nuevo
+      setPedido([...pedido, producto]);
+    }
   };
 
   return (
