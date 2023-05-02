@@ -1,4 +1,4 @@
-import { createContext, useState } from "react";
+import { createContext, useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import { categorias as categoriasDB } from "../data/categorias";
 
@@ -10,6 +10,15 @@ const QuisqoProvider = ({ children }) => {
   const [modal, setModal] = useState(false);
   const [producto, setProducto] = useState({});
   const [pedido, setPedido] = useState([]);
+  const [total, setTotal] = useState(0);
+
+  useEffect(() => {
+    const nuevoTotal = pedido.reduce(
+      (total, producto) => producto.precio * producto.cantidad + total,
+      0
+    );
+    setTotal(nuevoTotal);
+  }, [pedido]);
 
   // handle : para eventos con clicks -> cambia la categoria actual
   const handleClickCategoria = (id) => {
@@ -51,6 +60,12 @@ const QuisqoProvider = ({ children }) => {
     setModal(!modal);
   };
 
+  const handleEliminarProductoPedido = (id) => {
+    const pedidoActualizado = pedido.filter((producto) => producto.id !== id);
+    setPedido(pedidoActualizado);
+    toast.success("producto eliminado del pedido");
+  };
+
   return (
     //{{}} significa que es un codigo de JS y que pasamos un objeto
     <QuioscoContext.Provider
@@ -66,6 +81,8 @@ const QuisqoProvider = ({ children }) => {
         pedido,
         handleAgregarPedido,
         handleEditarCantidad,
+        handleEliminarProductoPedido,
+        total,
       }}
     >
       {children}
