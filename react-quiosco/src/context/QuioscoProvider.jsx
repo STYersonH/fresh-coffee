@@ -1,4 +1,5 @@
 import { createContext, useState } from "react";
+import { toast } from "react-toastify";
 import { categorias as categoriasDB } from "../data/categorias";
 
 const QuioscoContext = createContext();
@@ -33,9 +34,11 @@ const QuisqoProvider = ({ children }) => {
       );
 
       setPedido(pedidoActualizado);
+      toast.success("Guardado correctamente");
     } else {
       // agregar en pedido, el producto nuevo
       setPedido([...pedido, producto]);
+      toast.success("Agregado al pedido");
     }
   };
 

@@ -1,23 +1,16 @@
 import { Outlet } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 
+//importar componente y estilos de toastify
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 import Sidebar from "../components/Sidebar";
 import Resumen from "../components/Resumen";
 import Modal from "../components/Modal";
 import ModalProducto from "../components/ModalProducto";
 
 import useQuiosco from "../hooks/useQuiosco";
-
-const customStyles = {
-  content: {
-    top: "50%",
-    left: "50%",
-    right: "auto",
-    bottom: "auto",
-    marginRight: "-50%",
-    transform: "translate(-50%, -50%)",
-  },
-};
 
 const Layout = () => {
   const { modal, handleClickModal } = useQuiosco();
@@ -52,6 +45,9 @@ const Layout = () => {
           </Modal>
         )}
       </AnimatePresence>
+
+      {/* definimos el componente para luego usarlo, mostrar mensajes */}
+      <ToastContainer />
     </div>
   );
 };
