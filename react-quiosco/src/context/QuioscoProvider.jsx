@@ -26,7 +26,7 @@ const QuisqoProvider = ({ children }) => {
   };
 
   //desestructuracion de objetos
-  const handleAgregarPedido = ({ categoria_id, imagen, ...producto }) => {
+  const handleAgregarPedido = ({ categoria_id, ...producto }) => {
     //se actualizara la cantidad del pedido
     if (pedido.some((pedidoState) => pedidoState.id === producto.id)) {
       const pedidoActualizado = pedido.map((pedidoState) =>
@@ -40,6 +40,15 @@ const QuisqoProvider = ({ children }) => {
       setPedido([...pedido, producto]);
       toast.success("Agregado al pedido");
     }
+  };
+
+  const handleEditarCantidad = (id) => {
+    const productoActualizar = pedido.filter(
+      (producto) => producto.id === id
+    )[0];
+    //llenar el producto al cual se le abrira el modal
+    setProducto(productoActualizar);
+    setModal(!modal);
   };
 
   return (
@@ -56,6 +65,7 @@ const QuisqoProvider = ({ children }) => {
         handleSetProducto,
         pedido,
         handleAgregarPedido,
+        handleEditarCantidad,
       }}
     >
       {children}
