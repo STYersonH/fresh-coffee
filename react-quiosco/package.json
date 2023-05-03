@@ -10,6 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "axios": "^1.4.0",
     "framer-motion": "^10.12.4",
     "motion-react": "^0.15.0-alpha.1",
     "react": "^18.2.0",

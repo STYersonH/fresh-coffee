@@ -1,12 +1,15 @@
 import { createContext, useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import { categorias as categoriasDB } from "../data/categorias";
+import clienteAxios from "../config/axios";
 
 const QuioscoContext = createContext();
 
 const QuisqoProvider = ({ children }) => {
-  const [categorias, setCategorias] = useState(categoriasDB);
-  const [categoriaActual, setCategoriaActual] = useState(categorias[0]);
+  // const [categorias, setCategorias] = useState(categoriasDB); //ya no se usa ahora que se usa la API
+  const [categorias, setCategorias] = useState([]);
+  // const [categoriaActual, setCategoriaActual] = useState(categorias[0]);
+  const [categoriaActual, setCategoriaActual] = useState({});
   const [modal, setModal] = useState(false);
   const [producto, setProducto] = useState({});
   const [pedido, setPedido] = useState([]);
@@ -19,6 +22,26 @@ const QuisqoProvider = ({ children }) => {
     );
     setTotal(nuevoTotal);
   }, [pedido]);
+
+  // Obtener categorias mediante la API desde el back
+  const obtenerCategorias = async () => {
+    try {
+      //acceder a una variable de entorno local
+      const dominio = import.meta.env.VITE_API_URL; //ya no se necesita al tener el archivo axios.js
+      //const respuesta = await axios("http://127.0.0.1:8000/api/categorias");
+      // -- obtengo solo lo que me interesa
+      const { data } = await clienteAxios(`/api/categorias`);
+      //console.log(data.data);
+      setCategorias(data.data);
+      setCategoriaActual(data.data[0]);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    obtenerCategorias();
+  }, []);
 
   // handle : para eventos con clicks -> cambia la categoria actual
   const handleClickCategoria = (id) => {

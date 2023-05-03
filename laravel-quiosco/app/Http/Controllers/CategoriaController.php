@@ -14,6 +14,6 @@ class CategoriaController extends Controller
         // devolvera un JSON con todas las categorias de la tabla Categorias
         // return response()->json(['categorias' => Categoria::all()]); // -- forma 1
 
-        return new CategoriaCollection(Categoria::all());
+        return new CategoriaCollection(Categoria::all()); // en lugar de categorias dice data
     }
 }
