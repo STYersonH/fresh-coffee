@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CategoriaController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -14,6 +15,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+// las rutas en middleware requeriran que el usuario este autenticado para acceder a esa info
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::get('/categorias', [CategoriaController::class, 'index']);
+
+// para trabajar con API's Laravel tiene metodos como
+// --------------------------------------------------
+// ya no necesito especificar index, ya es automatico
+Route::apiResource('/categorias', CategoriaController::class); // podemos eliminar los nombres de los controladores
