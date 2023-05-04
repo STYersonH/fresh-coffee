@@ -1,13 +1,52 @@
+import { createRef, useState } from "react";
 import { Link } from "react-router-dom";
+import clienteAxios from "../config/axios";
+import Alerta from "../components/Alerta";
 
 const Registro = () => {
+  const nameRef = createRef();
+  const emailRef = createRef();
+  const passwordRef = createRef();
+  const passwordConfirmationRef = createRef();
+
+  const [errores, setErrores] = useState([]);
+
+  const handleSubmit = async (e) => {
+    //prevenir la accion de enviar el formulario
+    e.preventDefault();
+
+    const datos = {
+      name: nameRef.current.value,
+      email: emailRef.current.value,
+      password: passwordRef.current.value,
+      password_confirmation: passwordConfirmationRef.current.value,
+    };
+
+    try {
+      const respuesta = await clienteAxios.post("/api/registro", datos); //estos van a ser los datos que se envia al backend
+      console.log(respuesta);
+    } catch (error) {
+      //console.log(error.response.data.errors);
+      setErrores(Object.values(error.response.data.errors));
+    }
+  };
+
   return (
     <>
       {/* el el HTML final no se mostrara alguna etiqueta */}
       <h1 className="text-4xl font-black">Crea tu cuenta</h1>
       <p>crea tu cuenta llenando el formulario</p>
       <div className="bg-white shadow-md rounded-2xl mt-10 px-5 py-10">
-        <form action="">
+        <form
+          onSubmit={handleSubmit}
+          noValidate // evitar la validacion de react
+        >
+          {/* mostrar errores */}
+          {errores
+            ? errores.map((error, index) => (
+                <Alerta key={index}>{error}</Alerta>
+              ))
+            : null}
           <div className="mb-4">
             <label htmlFor="name" className="text-slate-800">
               Nombre:
@@ -18,9 +57,9 @@ const Registro = () => {
               className="mt-2 w-full p-3 bg-gray-50 rounded-xl"
               name="name"
               placeholder="your name"
+              ref={nameRef}
             />
           </div>
-
           <div className="mb-4">
             <label htmlFor="email" className="text-slate-800">
               Email:
@@ -31,9 +70,9 @@ const Registro = () => {
               className="mt-2 w-full p-3 bg-gray-50 rounded-xl"
               name="email"
               placeholder="your email"
+              ref={emailRef}
             />
           </div>
-
           <div className="mb-4">
             <label htmlFor="password" className="text-slate-800">
               Password:
@@ -44,9 +83,9 @@ const Registro = () => {
               className="mt-2 w-full p-3 bg-gray-50 rounded-xl"
               name="password"
               placeholder="your password"
+              ref={passwordRef}
             />
           </div>
-
           <div className="mb-4">
             <label htmlFor="password_confirm" className="text-slate-800">
               Repetir Password:
@@ -57,9 +96,9 @@ const Registro = () => {
               className="mt-2 w-full p-3 bg-gray-50 rounded-xl"
               name="password_confirm"
               placeholder="your password again"
+              ref={passwordConfirmationRef}
             />
           </div>
-
           <input
             type="submit"
             value="Crear cuenta"

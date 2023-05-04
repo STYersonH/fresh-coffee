@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoriaController;
 use App\Http\Controllers\ProductoController;
 use Illuminate\Http\Request;
@@ -28,3 +29,6 @@ Route::get('/categorias', [CategoriaController::class, 'index']);
 // ya no necesito especificar index, ya es automatico
 Route::apiResource('/categorias', CategoriaController::class); // podemos eliminar los nombres de los controladores
 Route::apiResource('/productos', ProductoController::class);
+
+// Autenticacion
+Route::post('/registro', [AuthController::class, 'register']);
