@@ -1,23 +1,63 @@
+import { createRef, useState } from "react";
 import { Link } from "react-router-dom";
+import clienteAxios from "../config/axios";
+import Alerta from "../components/Alerta";
 
 const Login = () => {
+  const emailRef = createRef();
+  const passwordRef = createRef();
+
+  const [errores, setErrores] = useState({ name: [], email: [], password: [] });
+  //const [errores, setErrores] = useState([]);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const datos = {
+      email: emailRef.current.value,
+      password: passwordRef.current.value,
+    };
+
+    try {
+      const { data } = await clienteAxios.post("/api/login", datos); //estos van a ser los datos que se envia al backend
+      //console.log(data.token);
+      //almacenar estos datos en el almacenamiento local del navegador
+      localStorage.setItem("AUTH_TOKEN", data.token);
+      setErrores({ name: [], email: [], password: [] });
+    } catch (error) {
+      console.log(error.response.data.errors);
+      setErrores(error.response.data.errors ? error.response.data.errors : {});
+    }
+  };
+
   return (
     <>
       {/* el el HTML final no se mostrara alguna etiqueta */}
       <h1 className="text-4xl font-black">Iniciar sesion</h1>
       <p>Para crear un pedido debes iniciar sesion</p>
       <div className="bg-white shadow-md rounded-2xl mt-10 px-5 py-10">
-        <form action="">
+        <form onSubmit={handleSubmit} noValidate>
+          {/* {errores
+            ? errores.map((error, index) => (
+                <Alerta key={index}>{error}</Alerta>
+              ))
+            : null} */}
           <div className="mb-4">
             <label htmlFor="email" className="text-slate-800">
               Email:
             </label>
+            {errores.email
+              ? errores.email.map((error, index) => (
+                  <Alerta key={index}>{error}</Alerta>
+                ))
+              : null}
             <input
               type="email"
               id="email"
               className="mt-2 w-full p-3 bg-gray-50 rounded-xl"
               name="email"
               placeholder="your email"
+              ref={emailRef}
             />
           </div>
 
@@ -25,12 +65,18 @@ const Login = () => {
             <label htmlFor="password" className="text-slate-800">
               Password:
             </label>
+            {errores.password
+              ? errores.password.map((error, index) => (
+                  <Alerta key={index}>{error}</Alerta>
+                ))
+              : null}
             <input
               type="password"
               id="password"
               className="mt-2 w-full p-3 bg-gray-50 rounded-xl"
               name="password"
               placeholder="your password"
+              ref={passwordRef}
             />
           </div>
 

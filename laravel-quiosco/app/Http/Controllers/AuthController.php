@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegistroRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
@@ -27,8 +29,26 @@ class AuthController extends Controller
         ];
     }
 
-    public function login(Request $request)
+    public function login(LoginRequest $request)
     {
+        $data = $request->validated();
+
+        // revisar el password
+        if (!Auth::attempt($data)) {
+            return response([
+                // al declararlo de esta forma se devolvera como parte del objeto de errores para password
+                'errors' => ['password' => ['El email o el password son incorrectos']],
+                // 'errors' => ['El email o el password son incorrectos'],
+            ], 422); // 422 por que el status por defecto es 200(correcto) y 422(es para errores)
+        }
+
+        // autenticar al usuario
+        $user = Auth::user(); // retornara informacion del usuario
+
+        return [
+            'token' => $user->createToken('token')->plainTextToken,
+            'user' => $user,
+        ];
     }
 
     public function logout(Request $request)
