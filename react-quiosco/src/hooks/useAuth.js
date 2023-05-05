@@ -50,11 +50,17 @@ export const useAuth = ({ middleware, url }) => {
     if (middleware === "guest" && url && user) {
       navigate(url);
     }
+    //si tenemos un error significa que no iniciamos sesion
+    if (middleware === "auth" && error) {
+      navigate("/auth/login");
+    }
   }, [user, error]);
 
   return {
     login,
     registro,
     logout,
+    user,
+    error,
   };
 };

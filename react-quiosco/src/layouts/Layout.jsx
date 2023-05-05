@@ -12,7 +12,10 @@ import ModalProducto from "../components/ModalProducto";
 
 import useQuiosco from "../hooks/useQuiosco";
 
+import { useAuth } from "../hooks/useAuth";
+
 const Layout = () => {
+  const { user, error } = useAuth({ middleware: "auth" }); //auth en vez de guess para escribir el codigo condicional
   const { modal, handleClickModal } = useQuiosco();
 
   return (
