@@ -7,6 +7,7 @@ const clienteAxios = axios.create({
     Accept: "application/json",
     "X-Requested-With": "XMLHttpRequest",
   },
+  //para enviar cookies en las solicitudes
   withCredentials: true,
 });
 

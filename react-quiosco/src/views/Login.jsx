@@ -1,14 +1,17 @@
 import { createRef, useState } from "react";
 import { Link } from "react-router-dom";
-import clienteAxios from "../config/axios";
+//import clienteAxios from "../config/axios";
+import { useAuth } from "../hooks/useAuth";
 import Alerta from "../components/Alerta";
 
 const Login = () => {
   const emailRef = createRef();
   const passwordRef = createRef();
 
-  const [errores, setErrores] = useState({ name: [], email: [], password: [] });
+  const [errores, setErrores] = useState({ email: [], password: [] });
   //const [errores, setErrores] = useState([]);
+
+  const { login } = useAuth({ middleware: "guest", url: "/" }); //redireccionar a la pagina principal
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -18,16 +21,8 @@ const Login = () => {
       password: passwordRef.current.value,
     };
 
-    try {
-      const { data } = await clienteAxios.post("/api/login", datos); //estos van a ser los datos que se envia al backend
-      //console.log(data.token);
-      //almacenar estos datos en el almacenamiento local del navegador
-      localStorage.setItem("AUTH_TOKEN", data.token);
-      setErrores({ name: [], email: [], password: [] });
-    } catch (error) {
-      console.log(error.response.data.errors);
-      setErrores(error.response.data.errors ? error.response.data.errors : {});
-    }
+    // moviendo try...catch a useAuth.js
+    login(datos, setErrores);
   };
 
   return (
