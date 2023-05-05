@@ -9,6 +9,7 @@ const Registro = () => {
   const passwordRef = createRef();
   const passwordConfirmationRef = createRef();
 
+  //const [errores, setErrores] = useState({ name: [], email: [], password: [] });
   const [errores, setErrores] = useState([]);
 
   const handleSubmit = async (e) => {
@@ -23,11 +24,17 @@ const Registro = () => {
     };
 
     try {
-      const respuesta = await clienteAxios.post("/api/registro", datos); //estos van a ser los datos que se envia al backend
-      console.log(respuesta);
+      //const respuesta = await clienteAxios.post("/api/registro", datos); //estos van a ser los datos que se envia al backend
+      const { data } = await clienteAxios.post("/api/registro", datos); //estos van a ser los datos que se envia al backend
+      console.log(data.token);
     } catch (error) {
       //console.log(error.response.data.errors);
-      setErrores(Object.values(error.response.data.errors));
+      setErrores(
+        error.response.data.errors
+          ? Object.values(error.response.data.errors)
+          : []
+      );
+      //setErrores(error.response.data.errors);
     }
   };
 
@@ -51,6 +58,11 @@ const Registro = () => {
             <label htmlFor="name" className="text-slate-800">
               Nombre:
             </label>
+            {/* {errores.name
+              ? errores.name.map((error, index) => (
+                  <Alerta key={index}>{error}</Alerta>
+                ))
+              : null} */}
             <input
               type="text"
               id="name"
@@ -60,10 +72,16 @@ const Registro = () => {
               ref={nameRef}
             />
           </div>
+
           <div className="mb-4">
             <label htmlFor="email" className="text-slate-800">
               Email:
             </label>
+            {/* {errores.email
+              ? errores.email.map((error, index) => (
+                  <Alerta key={index}>{error}</Alerta>
+                ))
+              : null} */}
             <input
               type="email"
               id="email"
@@ -73,10 +91,16 @@ const Registro = () => {
               ref={emailRef}
             />
           </div>
+
           <div className="mb-4">
             <label htmlFor="password" className="text-slate-800">
               Password:
             </label>
+            {/* {errores.password
+              ? errores.password.map((error, index) => (
+                  <Alerta key={index}>{error}</Alerta>
+                ))
+              : null} */}
             <input
               type="password"
               id="password"

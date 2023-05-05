@@ -17,10 +17,12 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// las rutas en middleware requeriran que el usuario este autenticado para acceder a esa info
+// -- las rutas en middleware requeriran que el usuario este autenticado para acceder a esa info
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+// -- Rutas que no requieren que el ususario se autentique
 
 Route::get('/categorias', [CategoriaController::class, 'index']);
 

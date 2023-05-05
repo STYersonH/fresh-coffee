@@ -35,4 +35,16 @@ class RegistroRequest extends FormRequest
             ],
         ];
     }
+
+    // agregando un metodo para los mensajes de validacion en espaniol
+    public function messages()
+    {
+        return [
+            'name' => 'El nombre es obligatorio',
+            'email.required' => 'El email es obligatorio',
+            'email.email' => 'El email no es valido',
+            'email.unique' => 'El usuario ya esta registrado',
+            'password' => 'El password debe contener al menos 8 caracteres, un simbolo y un numero',
+        ];
+    }
 }
