@@ -18,8 +18,15 @@ use Illuminate\Support\Facades\Route;
 */
 
 // -- las rutas en middleware requeriran que el usuario este autenticado para acceder a esa info
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+//     return $request->user();
+// });
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/user', function (Request $request) {
+        return $request->user();
+    });
+    // logout
+    Route::post('/logout', [AuthController::class, 'logout']);
 });
 
 // -- Rutas que no requieren que el ususario se autentique

@@ -1,9 +1,11 @@
 import Categoria from "./Categoria";
 import useQuiosco from "../hooks/useQuiosco";
+import { useAuth } from "../hooks/useAuth";
 
 const Sidebar = () => {
   // recuperar las categorias desde QuioscoProvider al usar useQuiosco
   const { categorias } = useQuiosco();
+  const { logout } = useAuth({ middleware: "Auth" });
 
   return (
     <aside className="md:w-72">
@@ -28,6 +30,7 @@ const Sidebar = () => {
           // truncate: ocultar con ... el texto que sobresale
           className="text-center bg-red-500 w-full p-3 font-bold text-white truncate hover:bg-red-600 rounded-md"
           type="button"
+          onClick={() => logout()}
         >
           Cancelar orden
         </button>

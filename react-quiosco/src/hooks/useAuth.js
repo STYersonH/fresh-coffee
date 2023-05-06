@@ -39,8 +39,26 @@ export const useAuth = ({ middleware, url }) => {
       setErrores(error.response.data.errors ? error.response.data.errors : {});
     }
   };
+
   const registro = () => {};
-  const logout = () => {};
+
+  // tiene que comunicarse con el backend en laravel
+  const logout = async () => {
+    try {
+      await clienteAxios.post("/api/logout", null, {
+        //autentica al usuario con santum
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      //remover el token del local storage
+      await mutate(undefined); // para que vuelva a validar
+      //useSWR cachea un poco en lo que revalida la informacion, lo forzamos con undefined
+      localStorage.removeItem("AUTH_TOKEN");
+    } catch (error) {
+      throw Error(error?.response?.data?.error);
+    }
+  };
 
   console.log("user: ", user);
   console.log("error:", error);
