@@ -5,7 +5,7 @@ import { useAuth } from "../hooks/useAuth";
 const Sidebar = () => {
   // recuperar las categorias desde QuioscoProvider al usar useQuiosco
   const { categorias } = useQuiosco();
-  const { logout } = useAuth({ middleware: "Auth" });
+  const { logout, user } = useAuth({ middleware: "Auth" });
 
   return (
     <aside className="md:w-72">
@@ -17,6 +17,8 @@ const Sidebar = () => {
           className="w-40 "
         />
       </div>
+
+      <p className="my-10 text-xl text-center">Hola: {user?.name}</p>
 
       <div className="mt-10">
         {categorias.map((categoria) => (

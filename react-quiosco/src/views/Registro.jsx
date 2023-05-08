@@ -1,7 +1,8 @@
 import { createRef, useState } from "react";
 import { Link } from "react-router-dom";
-import clienteAxios from "../config/axios";
+//import clienteAxios from "../config/axios"; ya no lo necesitamos ya que lo usamos en useAuth.js
 import Alerta from "../components/Alerta";
+import { useAuth } from "../hooks/useAuth.js";
 
 const Registro = () => {
   const nameRef = createRef();
@@ -11,6 +12,7 @@ const Registro = () => {
 
   //const [errores, setErrores] = useState({ name: [], email: [], password: [] });
   const [errores, setErrores] = useState([]);
+  const { registro } = useAuth({ middleware: "guest", url: "/" });
 
   const handleSubmit = async (e) => {
     //prevenir la accion de enviar el formulario
@@ -23,19 +25,7 @@ const Registro = () => {
       password_confirmation: passwordConfirmationRef.current.value,
     };
 
-    try {
-      //const respuesta = await clienteAxios.post("/api/registro", datos); //estos van a ser los datos que se envia al backend
-      const { data } = await clienteAxios.post("/api/registro", datos); //estos van a ser los datos que se envia al backend
-      console.log(data.token);
-    } catch (error) {
-      //console.log(error.response.data.errors);
-      setErrores(
-        error.response.data.errors
-          ? Object.values(error.response.data.errors)
-          : []
-      );
-      //setErrores(error.response.data.errors);
-    }
+    registro(datos, setErrores);
   };
 
   return (

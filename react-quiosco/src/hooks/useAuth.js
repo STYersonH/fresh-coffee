@@ -28,6 +28,7 @@ export const useAuth = ({ middleware, url }) => {
 
   const login = async (datos, setErrores) => {
     try {
+      //como es post entonces se usara el metodo store
       const { data } = await clienteAxios.post("/api/login", datos); //estos van a ser los datos que se envia al backend
       //console.log(data.token);
       //almacenar estos datos en el almacenamiento local del navegador
@@ -40,7 +41,24 @@ export const useAuth = ({ middleware, url }) => {
     }
   };
 
-  const registro = () => {};
+  const registro = async (datos, setErrores) => {
+    try {
+      //const respuesta = await clienteAxios.post("/api/registro", datos); //estos van a ser los datos que se envia al backend
+      const { data } = await clienteAxios.post("/api/registro", datos); //estos van a ser los datos que se envia al backend
+      console.log(data.token);
+      localStorage.setItem("AUTH_TOKEN", data.token);
+      setErrores([]);
+      await mutate(); // para revalidar
+    } catch (error) {
+      //console.log(error.response.data.errors);
+      setErrores(
+        error.response.data.errors
+          ? Object.values(error.response.data.errors)
+          : []
+      );
+      //setErrores(error.response.data.errors);
+    }
+  };
 
   // tiene que comunicarse con el backend en laravel
   const logout = async () => {

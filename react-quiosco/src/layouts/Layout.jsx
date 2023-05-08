@@ -19,13 +19,15 @@ const Layout = () => {
   const { modal, handleClickModal } = useQuiosco();
 
   return (
-    <div className="md:flex">
-      <Sidebar />
+    <>
+      <div className="md:flex">
+        <Sidebar />
 
-      <main className="flex-1 h-screen overflow-y-scroll bg-gray-100 p-3">
-        <Outlet /> {/* el contenido de children se renderizara aqui */}
-      </main>
-      <Resumen />
+        <main className="flex-1 h-screen overflow-y-scroll bg-gray-100 p-3">
+          <Outlet /> {/* el contenido de children se renderizara aqui */}
+        </main>
+        <Resumen />
+      </div>
 
       {/* animatePresence para que se aplique la animacion para el exit */}
       <AnimatePresence
@@ -51,7 +53,7 @@ const Layout = () => {
 
       {/* definimos el componente para luego usarlo, mostrar mensajes */}
       <ToastContainer />
-    </div>
+    </>
   );
 };
 

@@ -89,6 +89,47 @@ const QuisqoProvider = ({ children }) => {
     toast.success("producto eliminado del pedido");
   };
 
+  const handleSubmitNuevaOrden = async (logout) => {
+    const token = localStorage.getItem("AUTH_TOKEN");
+    try {
+      //como es post entonces se usara el metodo store
+      // data es lo que nos retorna axios
+      const { data } = await clienteAxios.post(
+        "/api/pedidos",
+        {
+          //el objeto que enviaremos al servidor: al controller
+          total,
+          productos: pedido.map((producto) => {
+            //pasar solo la informacion que necesitamos
+            return {
+              id: producto.id,
+              cantidad: producto.cantidad,
+            };
+          }), //renombrando pedido
+        },
+        {
+          //enviar una peticion autenticada
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      // mostrar como mensaje exitoso lo que se envio desde PedidoController
+      toast.success(data.message);
+      setTimeout(() => {
+        setPedido([]);
+      }, 1000);
+
+      setTimeout(() => {
+        localStorage.removeItem("AUTH_ITEM");
+        logout();
+      }, 3000);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     //{{}} significa que es un codigo de JS y que pasamos un objeto
     <QuioscoContext.Provider
@@ -106,6 +147,7 @@ const QuisqoProvider = ({ children }) => {
         handleEditarCantidad,
         handleEliminarProductoPedido,
         total,
+        handleSubmitNuevaOrden,
       }}
     >
       {children}

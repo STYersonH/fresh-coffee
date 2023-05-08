@@ -1,4 +1,5 @@
 import useQuiosco from "../hooks/useQuiosco";
+import { useAuth } from "../hooks/useAuth";
 
 import EmptyCart from "../../public/img/emptyCart.svg";
 import ResumenProducto from "./ResumenProducto";
@@ -6,7 +7,14 @@ import ResumenProducto from "./ResumenProducto";
 import { formatearDinero } from "../helpers";
 
 const Resumen = () => {
-  const { pedido, total } = useQuiosco();
+  const { pedido, total, handleSubmitNuevaOrden } = useQuiosco();
+  const { logout } = useAuth({});
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    handleSubmitNuevaOrden(logout);
+  };
 
   return (
     <aside className="md:w-72 h-screen overflow-y-scroll p-5 flex flex-col">
@@ -29,10 +37,10 @@ const Resumen = () => {
               <ResumenProducto producto={producto} key={producto.id} />
             ))}
             <p className="text-xl mt-10">total: {formatearDinero(total)}</p>
-            <form action="" className="w-full">
+            <form className="w-full" onSubmit={handleSubmit}>
               <div className="mt-5">
                 <input
-                  type="text"
+                  type="submit"
                   className="bg-indigo-600 hover:bg-indigo-800 px-5 py-2 rounded-lg uppercase font-bold text-white text-center w-full cursor-pointer"
                   //value="confirmar pedido"
                   defaultValue="confirmar pedido"
