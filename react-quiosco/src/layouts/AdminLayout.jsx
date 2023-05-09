@@ -1,7 +1,12 @@
 import AdminSidebar from "../components/AdminSidebar";
 import { Outlet } from "react-router-dom";
+import { useAuth } from "../hooks/useAuth";
 
 const AdminLayout = () => {
+  //instanciamos el middleware para restringir acceso
+  // al panel de control
+  useAuth({ middleware: "admin" });
+
   return (
     <div className="md:flex">
       <AdminSidebar />

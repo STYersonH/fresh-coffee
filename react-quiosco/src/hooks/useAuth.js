@@ -86,6 +86,16 @@ export const useAuth = ({ middleware, url }) => {
     if (middleware === "guest" && url && user) {
       navigate(url);
     }
+    // si es admin
+    if (middleware === "guest" && user && user.admin) {
+      navigate("/admin");
+    }
+
+    // restringir que nadie mas entre al panel de control
+    if (middleware === "admin" && user && !user.admin) {
+      navigate("/");
+    }
+
     //si tenemos un error significa que no iniciamos sesion
     if (middleware === "auth" && error) {
       navigate("/auth/login");

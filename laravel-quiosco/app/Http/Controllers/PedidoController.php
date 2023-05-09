@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\PedidoCollection;
 use App\Models\Pedido;
 use App\Models\PedidoProducto;
 use Carbon\Carbon;
@@ -15,6 +16,12 @@ class PedidoController extends Controller
      */
     public function index()
     {
+        // pedidoCollection permite devolver una coleccion de instancias del modelo 'Pedido'
+
+        // return new PedidoCollection(Pedido::where('estado', 0)->get());
+        return new PedidoCollection(Pedido::with('user')->with('productos')->where('estado', 0)->get());
+        // al usar with() 2 veces se construye la coleccion de pedidos incluyendose los datos de los usuarios y los productos
+        // relacionados
     }
 
     /**
