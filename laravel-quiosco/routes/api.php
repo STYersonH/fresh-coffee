@@ -31,17 +31,16 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // Almacenar ordenes
     Route::apiResource('/pedidos', PedidoController::class);
+
+    // para trabajar con API's Laravel tiene metodos como
+    // --------------------------------------------------
+    // ya no necesito especificar index, ya es automatico
+    // Route::get('/categorias', [CategoriaController::class, 'index']);
+    Route::apiResource('/categorias', CategoriaController::class); // podemos eliminar los nombres de los controladores
+    Route::apiResource('/productos', ProductoController::class);
 });
 
 // -- Rutas que no requieren que el ususario se autentique
-
-Route::get('/categorias', [CategoriaController::class, 'index']);
-
-// para trabajar con API's Laravel tiene metodos como
-// --------------------------------------------------
-// ya no necesito especificar index, ya es automatico
-Route::apiResource('/categorias', CategoriaController::class); // podemos eliminar los nombres de los controladores
-Route::apiResource('/productos', ProductoController::class);
 
 // Autenticacion
 Route::post('/registro', [AuthController::class, 'register']);
