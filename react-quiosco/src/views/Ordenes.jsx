@@ -2,8 +2,11 @@ import React from "react";
 import useSWR from "swr";
 import clienteAxios from "../config/axios";
 import { formatearDinero } from "../helpers";
+import useQuiosco from "../hooks/useQuiosco";
 
 const Ordenes = () => {
+  const { handleClickCompletarPedido } = useQuiosco();
+
   const token = localStorage.getItem("AUTH_TOKEN");
   const fetcher = () =>
     clienteAxios("/api/pedidos", {
@@ -62,6 +65,7 @@ const Ordenes = () => {
             <button
               type="button"
               className="bg-indigo-600 hover:bg-indigo-800 px-5 py-2 rounded-lg uppercase font-bold text-white text-center w-full cursor-pointer"
+              onClick={() => handleClickCompletarPedido(pedido.id)}
             >
               Completar
             </button>
